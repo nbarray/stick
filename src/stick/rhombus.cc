@@ -7,7 +7,7 @@ namespace stick
 
   Rhombus::Rhombus(float x, float y, float width)
     : sf::ConvexShape(4)
-    , width_(width)
+    , rect_{x, y, width, width / 2}
   {
     /*         1
      *       # | #
@@ -19,8 +19,6 @@ namespace stick
     setPoint(1, sf::Vector2f(x + width / 2, y));
     setPoint(2, sf::Vector2f(x + width, y + width / 4));
     setPoint(3, sf::Vector2f(x + width / 2, y + width / 2));
-
-    setPosition(x, y);
   }
 
   Rhombus::Rhombus(sf::Vector2f origin, float width)
@@ -28,20 +26,19 @@ namespace stick
   {}
 
   bool
-  Rhombus::contains(sf::Vector2f point)
+  Rhombus::contains(sf::Vector2f point) const
   {
     /*
      *  1
      *  | #
      *  +----2
      */
-    float x = getPosition().x;
-    float y = getPosition().y;
-    float dx = std::abs(point.x - x - width_ / 2);
-    float dy = std::abs(point.y - y - width_ / 4);
+    float x = rect_.left;
+    float y = rect_.top;
+    float dx = std::abs(point.x - x - rect_.width / 2);
+    float dy = std::abs(point.y - y - rect_.height / 2);
 
-    std::cerr << "x: " << x << ", y: " << y << std::endl;
-    auto f = [&] (float x) { return -x / 2 + width_ / 4; };
-    return (dx < width_ / 2) && (dy < f(dx));
+    auto f = [&] (float x) { return -x / 2 + rect_.height / 2; };
+    return (dx < rect_.width / 2) && (dy < f(dx));
   }
 }

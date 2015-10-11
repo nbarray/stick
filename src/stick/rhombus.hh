@@ -14,12 +14,10 @@ namespace stick
       Rhombus(float x, float y, float width = 128);
       Rhombus(sf::Vector2f origin, float width = 128);
 
-      Rhombus(Rhombus const&) = delete;
-      Rhombus(Rhombus&&) = delete;
-      Rhombus operator=(Rhombus const&) = delete;
-
-      bool contains(sf::Vector2f point);
+      bool contains(sf::Vector2f point) const;
+      sf::FloatRect const& get_rect() const { return rect_; }
     private:
-      float width_;
+
+      sf::FloatRect rect_;
   };
 }
